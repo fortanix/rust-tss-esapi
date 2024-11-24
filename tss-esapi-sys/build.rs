@@ -30,6 +30,7 @@ pub mod target {
             panic!("Missing environment variable `{}`.", TARGET_ENV_VAR_NAME);
         }))
             .expect("Failed to parse target triple.");
+        println!("triple = {:?}", target);
         match (target.architecture, target.operating_system) {
             (Architecture::Arm(_), OperatingSystem::Linux)
             | (Architecture::Aarch64(_), OperatingSystem::Linux)
