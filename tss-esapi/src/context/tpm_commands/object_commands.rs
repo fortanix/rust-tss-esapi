@@ -18,6 +18,7 @@ use crate::{
 use log::error;
 use std::convert::{TryFrom, TryInto};
 use std::ptr::{null, null_mut};
+use std::mem::size_of;
 
 impl Context {
     /// Create a key and return the handle.
@@ -50,7 +51,7 @@ impl Context {
         creation_pcrs: Option<PcrSelectionList>,
     ) -> Result<CreateKeyResult> {
         let sensitive_create = TPM2B_SENSITIVE_CREATE {
-            size: std::mem::size_of::<TPMS_SENSITIVE_CREATE>()
+            size: size_of::<TPMS_SENSITIVE_CREATE>()
                 .try_into()
                 .unwrap(), // will not fail on targets of at least 16 bits
             sensitive: TPMS_SENSITIVE_CREATE {

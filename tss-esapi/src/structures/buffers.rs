@@ -321,9 +321,10 @@ pub mod public_key_rsa {
 }
 
 pub mod sensitive_data {
+    use std::mem::size_of;
     buffer_type!(
         SensitiveData,
-        ::std::mem::size_of::<TPM2B_SENSITIVE_DATA>(),
+        size_of::<TPM2B_SENSITIVE_DATA>(),
         TPM2B_SENSITIVE_DATA
     );
 }

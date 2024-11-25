@@ -19,6 +19,7 @@ use rsa::PublicRsaParameters;
 
 use log::error;
 use std::convert::{TryFrom, TryInto};
+use std::mem::size_of;
 use tss_esapi_sys::{TPMU_PUBLIC_ID, TPMU_PUBLIC_PARMS};
 
 /// A builder for the [Public] type.
@@ -492,7 +493,7 @@ impl TryFrom<TPMT_PUBLIC> for Public {
 }
 
 impl Marshall for Public {
-    const BUFFER_SIZE: usize = std::mem::size_of::<TPMT_PUBLIC>();
+    const BUFFER_SIZE: usize = size_of::<TPMT_PUBLIC>();
 
     /// Produce a marshalled [TPMT_PUBLIC]
     ///

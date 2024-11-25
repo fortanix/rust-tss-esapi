@@ -17,6 +17,7 @@ use crate::{
 use log::error;
 use std::convert::{TryFrom, TryInto};
 use std::ptr::null_mut;
+use std::mem::size_of;
 
 impl Context {
     /// Create a primary key and return the handle.
@@ -39,7 +40,7 @@ impl Context {
         creation_pcrs: Option<PcrSelectionList>,
     ) -> Result<CreatePrimaryKeyResult> {
         let sensitive_create = TPM2B_SENSITIVE_CREATE {
-            size: std::mem::size_of::<TPMS_SENSITIVE_CREATE>()
+            size: size_of::<TPMS_SENSITIVE_CREATE>()
                 .try_into()
                 .unwrap(),
             sensitive: TPMS_SENSITIVE_CREATE {

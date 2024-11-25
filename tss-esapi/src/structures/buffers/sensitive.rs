@@ -12,6 +12,7 @@ use std::{
     ops::Deref,
 };
 use zeroize::Zeroize;
+use std::mem::size_of;
 
 /// Sensitive data buffer.
 ///
@@ -24,7 +25,7 @@ use zeroize::Zeroize;
 pub struct SensitiveBuffer(Vec<u8>);
 
 impl SensitiveBuffer {
-    pub const MAX_SIZE: usize = std::mem::size_of::<TPMT_SENSITIVE>();
+    pub const MAX_SIZE: usize = size_of::<TPMT_SENSITIVE>();
 
     pub fn value(&self) -> &[u8] {
         &self.0
@@ -116,7 +117,7 @@ impl TryFrom<Sensitive> for SensitiveBuffer {
 }
 
 impl Marshall for SensitiveBuffer {
-    const BUFFER_SIZE: usize = std::mem::size_of::<TPM2B_SENSITIVE>();
+    const BUFFER_SIZE: usize = size_of::<TPM2B_SENSITIVE>();
 
     /// Produce a marshalled [`TPM2B_SENSITIVE`]
     fn marshall(&self) -> Result<Vec<u8>> {

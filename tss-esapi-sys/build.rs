@@ -14,6 +14,7 @@ fn main() {
             installation.generate_bindings(&out_dir.join("tss_esapi_bindings.rs"));
         } else {
             target::ensure_supported();
+            #[cfg(not(feature = "skip-probe"))]
             let _ = tpm2_tss::Installation::probe(false);
         }
     }
@@ -21,7 +22,7 @@ fn main() {
 
 pub mod target {
     use std::str::FromStr;
-    use target_lexicon::{Architecture, OperatingSystem, Triple};
+    use target_lexicon::{Architecture, Environment, OperatingSystem, Triple};
     const TARGET_ENV_VAR_NAME: &str = "TARGET";
 
     /// Ensures that the `TARGET` is valid for cross compilation.
@@ -30,13 +31,14 @@ pub mod target {
             panic!("Missing environment variable `{}`.", TARGET_ENV_VAR_NAME);
         }))
             .expect("Failed to parse target triple.");
-        println!("triple = {:?}", target);
-        match (target.architecture, target.operating_system) {
-            (Architecture::Arm(_), OperatingSystem::Linux)
-            | (Architecture::Aarch64(_), OperatingSystem::Linux)
-            | (Architecture::X86_64, OperatingSystem::Darwin)
-            | (Architecture::X86_64, OperatingSystem::Linux) => {}
-            (arch, os) => {
+        // triple = Triple { architecture: X86_64, vendor: Fortanix, operating_system: Unknown, environment: Sgx, binary_format: Elf }
+        match (target.architecture, target.operating_system, target.environment) {
+            (Architecture::Arm(_), OperatingSystem::Linux, _)
+            | (Architecture::Aarch64(_), OperatingSystem::Linux, _)
+            | (Architecture::X86_64, OperatingSystem::Darwin, _)
+            | (Architecture::X86_64, OperatingSystem::Linux, _)
+            | (Architecture::X86_64, OperatingSystem::Unknown, Environment::Sgx) => {}
+            (arch, os, _) => {
                 panic!(
                     "Compilation target (architecture, OS) tuple ({}, {}) is not part of the \
                      supported tuples. Please compile with the \"generate-bindings\" feature or \

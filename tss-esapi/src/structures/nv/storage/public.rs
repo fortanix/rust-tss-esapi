@@ -11,6 +11,7 @@ use crate::{
 };
 use log::error;
 use std::convert::{TryFrom, TryInto};
+use std::mem::size_of;
 
 /// Representation of the public parameters of a non-volatile
 /// space allocation.
@@ -27,7 +28,7 @@ pub struct NvPublic {
 }
 
 impl NvPublic {
-    const MAX_SIZE: usize = std::mem::size_of::<TPMS_NV_PUBLIC>();
+    const MAX_SIZE: usize = size_of::<TPMS_NV_PUBLIC>();
 
     pub fn nv_index(&self) -> NvIndexTpmHandle {
         self.nv_index

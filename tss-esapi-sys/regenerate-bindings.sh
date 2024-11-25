@@ -79,7 +79,7 @@ git_checkout "$TPM2_TSS_GIT" "$TPM2_TSS_VERSION"
 # Regenerate bindings for x86_64-unknown-linux-gnu
 cargo clean
 cargo build --features generate-bindings
-find ../target -name tss_esapi_bindings.rs -exec cp {} ./src/bindings/x86_64-unknown-linux-gnu.rs \;
+find ../target -name tss_esapi_bindings.rs -exec cp {} ./src/bindings/x86_64_unknown_linux_gnu.rs \;
 
 # Clean and prepare SYSROOT
 prepare_sysroot
@@ -91,7 +91,7 @@ cross-compile-tpm2-tss aarch64-linux-gnu
 rustup target add aarch64-unknown-linux-gnu
 cargo clean
 cargo build --features generate-bindings --target aarch64-unknown-linux-gnu
-find ../target -name tss_esapi_bindings.rs -exec cp {} ./src/bindings/aarch64-unknown-linux-gnu.rs \;
+find ../target -name tss_esapi_bindings.rs -exec cp {} ./src/bindings/aarch64_unknown_linux_gnu.rs \;
 
 # Clean and prepare SYSROOT
 prepare_sysroot
@@ -103,4 +103,4 @@ cross-compile-tpm2-tss arm-linux-gnueabi
 rustup target add armv7-unknown-linux-gnueabi
 cargo clean
 cargo build --features generate-bindings --target armv7-unknown-linux-gnueabi
-find ../target -name tss_esapi_bindings.rs -exec cp {} ./src/bindings/arm-unknown-linux-gnueabi.rs \;
+find ../target -name tss_esapi_bindings.rs -exec cp {} ./src/bindings/arm_unknown_linux_gnueabi.rs \;

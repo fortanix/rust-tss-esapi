@@ -4,6 +4,7 @@ use tss_esapi_sys::TPM2B_ECC_POINT;
 // SPDX-License-Identifier: Apache-2.0
 use crate::{structures::EccParameter, tss2_esys::TPMS_ECC_POINT, Error, Result};
 use std::convert::{TryFrom, TryInto};
+use std::mem::size_of;
 
 /// Structure holding ecc point information
 ///
@@ -49,9 +50,9 @@ impl From<EccPoint> for TPMS_ECC_POINT {
 
 impl From<EccPoint> for TPM2B_ECC_POINT {
     fn from(ecc_point: EccPoint) -> Self {
-        let size = std::mem::size_of::<u16>()
+        let size = size_of::<u16>()
             + ecc_point.x().len()
-            + std::mem::size_of::<u16>()
+            + size_of::<u16>()
             + ecc_point.y().len();
         TPM2B_ECC_POINT {
             size: size as u16,
